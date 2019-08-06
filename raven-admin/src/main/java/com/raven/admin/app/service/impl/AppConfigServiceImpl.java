@@ -7,6 +7,7 @@ import com.raven.common.utils.DateTimeUtils;
 import com.raven.common.utils.UidUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +41,7 @@ public class AppConfigServiceImpl implements AppConfigService {
 
     @Override
     @Transactional(rollbackFor = Throwable.class)
+    @CacheEvict(value = "UnboundedCache",key = "'getApp_'+#uid")
     public void delApp(String uid) {
         AppConfigModel model = new AppConfigModel();
         model.setUid(uid);
